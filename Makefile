@@ -179,6 +179,8 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         corev_apu/riscv-dbg/src/dm_top.sv                                            \
         corev_apu/riscv-dbg/debug_rom/debug_rom.sv                                   \
         corev_apu/register_interface/src/apb_to_reg.sv                               \
+        corev_apu/stream_shifter/stream_shifter.sv                                   \
+        corev_apu/stream_shifter/axi_shifter.sv                                      \
         vendor/pulp-platform/axi/src/axi_multicut.sv                                 \
         vendor/pulp-platform/common_cells/src/rstgen_bypass.sv                       \
         vendor/pulp-platform/common_cells/src/rstgen.sv                              \

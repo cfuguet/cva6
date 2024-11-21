@@ -429,22 +429,20 @@ module ariane_testharness #(
     .AXI_DATA_WIDTH ( AXI_DATA_WIDTH               ),
     .AXI_ID_WIDTH   ( ariane_axi_soc::IdWidthSlave ),
     .AXI_USER_WIDTH ( AXI_USER_WIDTH               )
-  ) dram_delayed();
+  ) dram_shifted();
 
-  axi_delayer_intf #(
-    .AXI_ID_WIDTH        ( ariane_axi_soc::IdWidthSlave ),
-    .AXI_ADDR_WIDTH      ( AXI_ADDRESS_WIDTH            ),
-    .AXI_DATA_WIDTH      ( AXI_DATA_WIDTH               ),
-    .AXI_USER_WIDTH      ( AXI_USER_WIDTH               ),
-    .STALL_RANDOM_INPUT  ( StallRandomInput             ),
-    .STALL_RANDOM_OUTPUT ( StallRandomOutput            ),
-    .FIXED_DELAY_INPUT   ( 0                            ),
-    .FIXED_DELAY_OUTPUT  ( 0                            )
-  ) i_axi_delayer (
+  axi_shifter_intf #(
+    .AXI_ID_WIDTH   ( ariane_axi_soc::IdWidthSlave ),
+    .AXI_ADDR_WIDTH ( AXI_ADDRESS_WIDTH            ),
+    .AXI_DATA_WIDTH ( AXI_DATA_WIDTH               ),
+    .AXI_USER_WIDTH ( AXI_USER_WIDTH               ),
+    .DEPTH_INPUT    ( 64                           ),
+    .DEPTH_OUTPUT   ( 1                            )
+  ) i_axi_shifter (
     .clk_i  ( clk_i        ),
     .rst_ni ( ndmreset_n   ),
     .slv    ( dram         ),
-    .mst    ( dram_delayed )
+    .mst    ( dram_shifted )
   );
 
   axi2mem #(
@@ -455,7 +453,7 @@ module ariane_testharness #(
   ) i_axi2mem (
     .clk_i  ( clk_i        ),
     .rst_ni ( ndmreset_n   ),
-    .slave  ( dram_delayed ),
+    .slave  ( dram_shifted ),
     .req_o  ( req          ),
     .we_o   ( we           ),
     .addr_o ( addr         ),
