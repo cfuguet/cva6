@@ -145,6 +145,23 @@ module ariane_testharness #(
   assign jtag_resp_valid     = (jtag_enable[0]) ? debug_resp_valid   : 1'b0;
   assign dmi_resp_valid      = (jtag_enable[0]) ? 1'b0               : debug_resp_valid;
 
+  logic [63:0] cnt_rflits_q /*verilator public_flat_rd*/;
+  logic [63:0] cnt_wflits_q /*verilator public_flat_rd*/;
+
+  always_ff @(posedge clk_i or negedge rst_ni)
+  begin : instr_counters_ff
+      if (!rst_ni) begin
+          cnt_rflits_q <= 0;
+          cnt_wflits_q <= 0;
+      end else begin
+          if (dram_shifted.r_valid && dram_shifted.r_ready)
+              cnt_rflits_q <= cnt_rflits_q + 1;
+          if (dram_shifted.w_valid && dram_shifted.w_ready)
+              cnt_wflits_q <= cnt_wflits_q + 1;
+      end
+  end
+
+
   // SiFive's SimJTAG Module
   // Converts to DPI calls
   SimJTAG i_SimJTAG (
