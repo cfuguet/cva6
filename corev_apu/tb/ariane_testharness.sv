@@ -427,19 +427,19 @@ module ariane_testharness #(
   logic [AXI_USER_WIDTH-1:0]    wuser;
   logic [AXI_USER_WIDTH-1:0]    ruser;
 
-  axi_riscv_atomics_wrap #(
-    .AXI_ADDR_WIDTH ( AXI_ADDRESS_WIDTH            ),
-    .AXI_DATA_WIDTH ( AXI_DATA_WIDTH               ),
-    .AXI_ID_WIDTH   ( ariane_axi_soc::IdWidthSlave ),
-    .AXI_USER_WIDTH ( AXI_USER_WIDTH               ),
-    .AXI_MAX_WRITE_TXNS ( 1  ),
-    .RISCV_WORD_WIDTH   ( 64 )
-  ) i_axi_riscv_atomics (
-    .clk_i,
-    .rst_ni ( ndmreset_n               ),
-    .slv    ( master[ariane_soc::DRAM] ),
-    .mst    ( dram                     )
-  );
+  // axi_riscv_atomics_wrap #(
+  //   .AXI_ADDR_WIDTH ( AXI_ADDRESS_WIDTH            ),
+  //   .AXI_DATA_WIDTH ( AXI_DATA_WIDTH               ),
+  //   .AXI_ID_WIDTH   ( ariane_axi_soc::IdWidthSlave ),
+  //   .AXI_USER_WIDTH ( AXI_USER_WIDTH               ),
+  //   .AXI_MAX_WRITE_TXNS ( 1  ),
+  //   .RISCV_WORD_WIDTH   ( 64 )
+  // ) i_axi_riscv_atomics (
+  //   .clk_i,
+  //   .rst_ni ( ndmreset_n               ),
+  //   .slv    ( master[ariane_soc::DRAM] ),
+  //   .mst    ( dram                     )
+  // );
 
   AXI_BUS #(
     .AXI_ADDR_WIDTH ( AXI_ADDRESS_WIDTH            ),
@@ -458,7 +458,8 @@ module ariane_testharness #(
   ) i_axi_shifter (
     .clk_i  ( clk_i        ),
     .rst_ni ( ndmreset_n   ),
-    .slv    ( dram         ),
+//    .slv    ( dram         ),
+    .slv    ( master[ariane_soc::DRAM] ),
     .mst    ( dram_shifted )
   );
 
