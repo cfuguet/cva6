@@ -397,6 +397,12 @@ done_processing:
     fprintf(stderr, "%s *** SUCCESS *** (tohost = 0) after %ld cycles\n", htif_argv[1], main_time);
   }
 
+  fprintf(stdout, "[perf] cycles = %ld, rflits = %lu, wflits = %lu\n",
+          main_time,
+          top->rootp->ariane_testharness__DOT__cnt_rflits_q,
+          top->rootp->ariane_testharness__DOT__cnt_wflits_q);
+
+
   if (dtm) delete dtm;
   if (jtag) delete jtag;
 
