@@ -37,7 +37,7 @@ if ! [ -n "$UVM_VERBOSITY" ]; then
     export UVM_VERBOSITY=UVM_NONE
 fi
 
-export DV_OPTS="$DV_OPTS --issrun_opts=+debug_disable=1+UVM_VERBOSITY=$UVM_VERBOSITY"
+export DV_OPTS="$DV_OPTS --issrun_opts='+debug_disable +UVM_VERBOSITY="$UVM_VERBOSITY"'"
 
 CC_OPTS="-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -g ../tests/custom/common/syscalls.c ../tests/custom/common/crt.S -I../tests/custom/env -I../tests/custom/common -lgcc"
 
@@ -46,10 +46,10 @@ cd verif/sim/
 
 make -C ../.. clean
 make clean_all
-python3 cva6.py --testlist=../tests/testlist_riscv-compliance-cv32a60x.yaml --test rv32i-I-ADD-01 --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS $DV_OPTS
-python3 cva6.py --testlist=../tests/testlist_riscv-tests-cv32a60x-p.yaml --test rv32ui-p-add --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS $DV_OPTS
-python3 cva6.py --testlist=../tests/testlist_riscv-arch-test-cv32a60x.yaml --test rv32im-cadd-01 --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS $DV_OPTS  --linker=../../config/gen_from_riscv_config/linker/link.ld
-python3 cva6.py --c_tests ../tests/custom/hello_world/hello_world.c --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS --linker=../../config/gen_from_riscv_config/linker/link.ld --gcc_opts="$CC_OPTS -nostdlib -lgcc" $DV_OPTS
+eval "python3 cva6.py --testlist=../tests/testlist_riscv-compliance-cv32a60x.yaml --test rv32i-I-ADD-01 --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS $DV_OPTS"
+eval "python3 cva6.py --testlist=../tests/testlist_riscv-tests-cv32a60x-p.yaml --test rv32ui-p-add --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS $DV_OPTS"
+eval "python3 cva6.py --testlist=../tests/testlist_riscv-arch-test-cv32a60x.yaml --test rv32im-cadd-01 --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS $DV_OPTS  --linker=../../config/gen_from_riscv_config/linker/link.ld"
+eval "python3 cva6.py --c_tests ../tests/custom/hello_world/hello_world.c --iss_yaml cva6.yaml --target cv32a6_imac_sv32 --iss=$DV_SIMULATORS --linker=../../config/gen_from_riscv_config/linker/link.ld --gcc_opts="$CC_OPTS -nostdlib -lgcc" $DV_OPTS"
 make -C ../.. clean
 make clean_all
 

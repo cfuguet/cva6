@@ -40,7 +40,7 @@ if ! [ -n "$UVM_VERBOSITY" ]; then
   export UVM_VERBOSITY=UVM_NONE
 fi
 
-export DV_OPTS="$DV_OPTS --issrun_opts=+debug_disable=1+UVM_VERBOSITY=$UVM_VERBOSITY"
+export DV_OPTS="$DV_OPTS --issrun_opts='+debug_disable +UVM_VERBOSITY="$UVM_VERBOSITY"'"
 
 cd verif/sim/
 
@@ -55,12 +55,11 @@ riscv_tests_list=(
   rv32ui-p-jal
 )
 for t in ${riscv_tests_list[@]} ; do
-  python3 cva6.py --testlist=../tests/testlist_riscv-tests-${DV_TARGET}-p.yaml --test $t --iss_yaml cva6.yaml --target ${DV_TARGET} --iss=$DV_SIMULATORS $DV_OPTS
+  eval "python3 cva6.py --testlist=../tests/testlist_riscv-tests-${DV_TARGET}-p.yaml --test $t --iss_yaml cva6.yaml --target ${DV_TARGET} --iss=$DV_SIMULATORS $DV_OPTS"
   [[ $? > 0 ]] && ((errors++))
 done
 
-python3 cva6.py --target ${DV_TARGET} --iss=$DV_SIMULATORS --iss_yaml=cva6.yaml --c_tests ../tests/custom/hello_world/hello_world.c --linker=../../config/gen_from_riscv_config/linker/link.ld\
-  --gcc_opts="-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -g ../tests/custom/common/syscalls.c ../tests/custom/common/crt.S -lgcc -I../tests/custom/env -I../tests/custom/common" $DV_OPTS
+eval "python3 cva6.py --target ${DV_TARGET} --iss=$DV_SIMULATORS --iss_yaml=cva6.yaml --c_tests ../tests/custom/hello_world/hello_world.c --linker=../../config/gen_from_riscv_config/linker/link.ld --gcc_opts='-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -g ../tests/custom/common/syscalls.c ../tests/custom/common/crt.S -lgcc -I../tests/custom/env -I../tests/custom/common' $DV_OPTS"
 [[ $? > 0 ]] && ((errors++))
 
 make -C ../.. clean
