@@ -33,6 +33,8 @@ module load_unit
     input logic rst_ni,
     // Flush signal - CONTROLLER
     input logic flush_i,
+    // Enable virtual memory translation for load/stores
+    input logic en_ld_st_translation_i,
     // Load request is valid - LSU_BYPASS
     input logic valid_i,
     // Load request input - LSU_BYPASS
@@ -213,7 +215,9 @@ module load_unit
   if (PPNPredictEn) begin : gen_index_predict
     // predict the most significant bits of the cache index (as they are not
     // part of the offset of 4K virtual pages)
-    assign req_port_o.address_index = {ppn_predict_q, lsu_ctrl_i.vaddr[11:0]};
+    assign req_port_o.address_index = en_ld_st_translation_i ?
+        {ppn_predict_q, lsu_ctrl_i.vaddr[11:0]} :
+        lsu_ctrl_i.vaddr[CVA6Cfg.DCACHE_INDEX_WIDTH-1:0];
   end else begin : gen_index_nopredict
     // we can output the lower 12 bits as the index to the cache (virt[11:0] == phys[11:0])
     assign req_port_o.address_index = lsu_ctrl_i.vaddr[CVA6Cfg.DCACHE_INDEX_WIDTH-1:0];
@@ -270,7 +274,8 @@ module load_unit
     // PPN lsb prediction
     ppn_predict_d        = ppn_predict_q;
     ppn_predict_kill_d   = ppn_predict_kill_q;
-    ppn_predict_match    = !PPNPredictEn || (dtlb_paddr_i[12 +: PPNPredictWidth] == ppn_predict_q);
+    ppn_predict_match    = !PPNPredictEn || !en_ld_st_translation_i ||
+        (dtlb_paddr_i[12 +: PPNPredictWidth] == ppn_predict_q);
 
     case (state_q)
       IDLE: begin

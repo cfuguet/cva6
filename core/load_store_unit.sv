@@ -453,10 +453,10 @@ module load_store_unit
       .clk_i,
       .rst_ni,
       .flush_i,
+      .en_ld_st_translation_i,
       .valid_i   (ld_valid_i),
       .lsu_ctrl_i(lsu_ctrl),
       .pop_ld_o  (pop_ld),
-
       .valid_o              (ld_valid),
       .trans_id_o           (ld_trans_id),
       .result_o             (ld_result),
