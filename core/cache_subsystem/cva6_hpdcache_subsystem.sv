@@ -214,7 +214,7 @@ module cva6_hpdcache_subsystem
     /*FIXME we should add additional CVA6 config parameters (cbufEntries)*/
     userCfg.cbufEntries = 4;
     userCfg.refillCoreRspFeedthrough = 1'b1;
-    userCfg.refillFifoDepth = 2;
+    userCfg.refillFifoDepth = 2 * (CVA6Cfg.DCACHE_LINE_WIDTH / CVA6Cfg.AxiDataWidth);
     userCfg.wbufDirEntries = CVA6Cfg.WtDcacheWbufDepth;
     userCfg.wbufDataEntries = CVA6Cfg.WtDcacheWbufDepth;
     userCfg.wbufWords = 1;
