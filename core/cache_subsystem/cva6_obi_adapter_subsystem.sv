@@ -13,26 +13,28 @@
 // Month, Year - Author, Organisation
 //        Short description
 
+`include "obi/typedef.svh"
+
 module cva6_obi_adapter_subsystem
 //  Parameters
 #(
     parameter config_pkg::cva6_cfg_t CVA6Cfg = config_pkg::cva6_cfg_empty,
 
     // YPB Types
-    parameter type ypb_fetch_req_t =  logic,         
-    parameter type ypb_fetch_rsp_t =  logic,         
-    parameter type ypb_store_req_t = logic,         
-    parameter type ypb_store_rsp_t = logic,         
-    parameter type ypb_amo_req_t = logic,         
-    parameter type ypb_amo_rsp_t = logic,         
-    parameter type ypb_load_req_t = logic,         
-    parameter type ypb_load_rsp_t = logic,         
-    parameter type ypb_mmu_ptw_req_t = logic,         
-    parameter type ypb_mmu_ptw_rsp_t = logic,         
-    parameter type ypb_zcmt_req_t = logic,         
-    parameter type ypb_zcmt_rsp_t = logic,         
+    parameter type ypb_fetch_req_t = logic,
+    parameter type ypb_fetch_rsp_t = logic,
+    parameter type ypb_store_req_t = logic,
+    parameter type ypb_store_rsp_t = logic,
+    parameter type ypb_amo_req_t = logic,
+    parameter type ypb_amo_rsp_t = logic,
+    parameter type ypb_load_req_t = logic,
+    parameter type ypb_load_rsp_t = logic,
+    parameter type ypb_mmu_ptw_req_t = logic,
+    parameter type ypb_mmu_ptw_rsp_t = logic,
+    parameter type ypb_zcmt_req_t = logic,
+    parameter type ypb_zcmt_rsp_t = logic,
 
-    parameter type noc_req_t = logic,  
+    parameter type noc_req_t  = logic,
     parameter type noc_resp_t = logic
 
 )
@@ -51,7 +53,7 @@ module cva6_obi_adapter_subsystem
     input  noc_resp_t noc_resp_i,
 
     // Fetch Request channel - FRONTEND
-    input  ypb_fetch_req_t ypb_fetch_req_i,
+    input ypb_fetch_req_t ypb_fetch_req_i,
     // Fetch Response channel - FRONTEND
     output ypb_fetch_rsp_t ypb_fetch_rsp_o,
     // Store cache response - CACHES
@@ -77,9 +79,9 @@ module cva6_obi_adapter_subsystem
 
     //  I$
     // Instruction cache enable - CSR_REGFILE
-    input logic icache_en_i,
+    input  logic icache_en_i,
     // Flush the instruction cache - CONTROLLER
-    input logic icache_flush_i,
+    input  logic icache_flush_i,
     // instructino cache miss - PERF_COUNTERS
     output logic icache_miss_o,
 
@@ -100,7 +102,7 @@ module cva6_obi_adapter_subsystem
     output logic wbuffer_not_ni_o
 
 );
- 
+
 
   //OBI FETCH
   `OBI_LOCALPARAM_TYPE_ALL(obi_fetch, CVA6Cfg.ObiFetchbusCfg);
@@ -129,10 +131,10 @@ module cva6_obi_adapter_subsystem
   obi_zcmt_req_t obi_zcmt_req;
   obi_zcmt_rsp_t obi_zcmt_rsp;
 
-  
+
   // Caches signals assignement
 
-  assign dcache_flush_ack_o = dcache_flush_i;  
+  assign dcache_flush_ack_o = dcache_flush_i;
   assign wbuffer_empty_o = 1'b1;
   assign wbuffer_not_ni_o = 1'b1;
 
@@ -143,8 +145,8 @@ module cva6_obi_adapter_subsystem
   assign noc_req_o.obi_store_req = obi_store_req;
   assign noc_req_o.obi_amo_req = obi_amo_req;
   assign noc_req_o.obi_load_req = obi_load_req;
-  assign noc_req_o.obi_mmu_ptw_req = '0; //obi_mmu_ptw_req; TODO
-  assign noc_req_o.obi_zcmt_req = '0; //obi_zcmt_req; TODO
+  assign noc_req_o.obi_mmu_ptw_req = '0;  //obi_mmu_ptw_req; TODO
+  assign noc_req_o.obi_zcmt_req = '0;  //obi_zcmt_req; TODO
 
   assign obi_fetch_req.req = ypb_fetch_req_i.preq;
   assign obi_fetch_req.reqpar = !ypb_fetch_req_i.preq;
@@ -157,7 +159,7 @@ module cva6_obi_adapter_subsystem
   assign obi_fetch_req.a.a_optional.wuser = '0;
   assign obi_fetch_req.a.a_optional.atop = ypb_fetch_req_i.atop;
   assign obi_fetch_req.a.a_optional.memtype[0] = '0;
-  assign obi_fetch_req.a.a_optional.memtype[1]= ypb_fetch_req_i.cacheable;
+  assign obi_fetch_req.a.a_optional.memtype[1] = ypb_fetch_req_i.cacheable;
   assign obi_fetch_req.a.a_optional.mid = '0;
   assign obi_fetch_req.a.a_optional.prot[0] = ypb_fetch_req_i.access_type;
   assign obi_fetch_req.a.a_optional.prot[2:1] = 2'b11;
@@ -177,7 +179,7 @@ module cva6_obi_adapter_subsystem
   assign obi_store_req.a.a_optional.wuser = '0;
   assign obi_store_req.a.a_optional.atop = ypb_store_req_i.atop;
   assign obi_store_req.a.a_optional.memtype[0] = '0;
-  assign obi_store_req.a.a_optional.memtype[1]= ypb_store_req_i.cacheable;
+  assign obi_store_req.a.a_optional.memtype[1] = ypb_store_req_i.cacheable;
   assign obi_store_req.a.a_optional.mid = '0;
   assign obi_store_req.a.a_optional.prot[0] = ypb_store_req_i.access_type;
   assign obi_store_req.a.a_optional.prot[2:1] = 2'b11;
@@ -197,7 +199,7 @@ module cva6_obi_adapter_subsystem
   assign obi_amo_req.a.a_optional.wuser = '0;
   assign obi_amo_req.a.a_optional.atop = ypb_amo_req_i.atop;
   assign obi_amo_req.a.a_optional.memtype[0] = '0;
-  assign obi_amo_req.a.a_optional.memtype[1]= ypb_amo_req_i.cacheable;
+  assign obi_amo_req.a.a_optional.memtype[1] = ypb_amo_req_i.cacheable;
   assign obi_amo_req.a.a_optional.mid = '0;
   assign obi_amo_req.a.a_optional.prot[0] = ypb_amo_req_i.access_type;
   assign obi_amo_req.a.a_optional.prot[2:1] = 2'b11;
@@ -217,7 +219,7 @@ module cva6_obi_adapter_subsystem
   assign obi_load_req.a.a_optional.wuser = '0;
   assign obi_load_req.a.a_optional.atop = ypb_load_req_i.atop;
   assign obi_load_req.a.a_optional.memtype[0] = '0;
-  assign obi_load_req.a.a_optional.memtype[1]= ypb_load_req_i.cacheable;
+  assign obi_load_req.a.a_optional.memtype[1] = ypb_load_req_i.cacheable;
   assign obi_load_req.a.a_optional.mid = '0;
   assign obi_load_req.a.a_optional.prot[0] = ypb_load_req_i.access_type;
   assign obi_load_req.a.a_optional.prot[2:1] = 2'b11;
