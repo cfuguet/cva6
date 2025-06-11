@@ -117,6 +117,30 @@ module cva6_obi_adapter_subsystem
   //OBI ZCMT
   `OBI_LOCALPARAM_TYPE_ALL(obi_zcmt, CVA6Cfg.ObiZcmtbusCfg);
 
+  // ----------------------
+  // AMO Functions
+  // ----------------------
+  function automatic logic [5:0] amo_cva6_to_obi(logic [3:0] cva6_amo);
+    case (cva6_amo)
+      ariane_pkg::AMO_NONE: return obi_pkg::ATOPNONE;
+      ariane_pkg::AMO_LR: return obi_pkg::ATOPLR;
+      ariane_pkg::AMO_SC: return obi_pkg::ATOPSC;
+      ariane_pkg::AMO_SWAP: return obi_pkg::AMOSWAP;
+      ariane_pkg::AMO_ADD: return obi_pkg::AMOADD;
+      ariane_pkg::AMO_AND: return obi_pkg::AMOAND;
+      ariane_pkg::AMO_OR: return obi_pkg::AMOOR;
+      ariane_pkg::AMO_XOR: return obi_pkg::AMOXOR;
+      ariane_pkg::AMO_MAX: return obi_pkg::AMOMAX;
+      ariane_pkg::AMO_MAXU: return obi_pkg::AMOMAXU;
+      ariane_pkg::AMO_MIN: return obi_pkg::AMOMIN;
+      ariane_pkg::AMO_MINU: return obi_pkg::AMOMINU;
+      ariane_pkg::AMO_CAS1:
+      return 6'h0C;  // unused, not part of riscv spec, but provided in OpenPiton
+      ariane_pkg::AMO_CAS2:
+      return 6'h0D;  // unused, not part of riscv spec, but provided in OpenPiton
+    endcase
+    return 8'b0;
+  endfunction
 
   obi_fetch_req_t obi_fetch_req;
   obi_fetch_rsp_t obi_fetch_rsp;
@@ -130,7 +154,6 @@ module cva6_obi_adapter_subsystem
   obi_mmu_ptw_rsp_t obi_mmu_ptw_rsp;
   obi_zcmt_req_t obi_zcmt_req;
   obi_zcmt_rsp_t obi_zcmt_rsp;
-
 
   // Caches signals assignement
 
@@ -157,7 +180,7 @@ module cva6_obi_adapter_subsystem
   assign obi_fetch_req.a.aid = ypb_fetch_req_i.aid;
   assign obi_fetch_req.a.a_optional.auser = '0;
   assign obi_fetch_req.a.a_optional.wuser = '0;
-  assign obi_fetch_req.a.a_optional.atop = ypb_fetch_req_i.atop;
+  assign obi_fetch_req.a.a_optional.atop = '0;
   assign obi_fetch_req.a.a_optional.memtype[0] = '0;
   assign obi_fetch_req.a.a_optional.memtype[1] = ypb_fetch_req_i.cacheable;
   assign obi_fetch_req.a.a_optional.mid = '0;
@@ -177,7 +200,7 @@ module cva6_obi_adapter_subsystem
   assign obi_store_req.a.aid = ypb_store_req_i.aid;
   assign obi_store_req.a.a_optional.auser = '0;
   assign obi_store_req.a.a_optional.wuser = '0;
-  assign obi_store_req.a.a_optional.atop = ypb_store_req_i.atop;
+  assign obi_store_req.a.a_optional.atop = '0;
   assign obi_store_req.a.a_optional.memtype[0] = '0;
   assign obi_store_req.a.a_optional.memtype[1] = ypb_store_req_i.cacheable;
   assign obi_store_req.a.a_optional.mid = '0;
@@ -197,7 +220,7 @@ module cva6_obi_adapter_subsystem
   assign obi_amo_req.a.aid = ypb_amo_req_i.aid;
   assign obi_amo_req.a.a_optional.auser = '0;
   assign obi_amo_req.a.a_optional.wuser = '0;
-  assign obi_amo_req.a.a_optional.atop = ypb_amo_req_i.atop;
+  assign obi_amo_req.a.a_optional.atop = amo_cva6_to_obi(ypb_amo_req_i.atop);
   assign obi_amo_req.a.a_optional.memtype[0] = '0;
   assign obi_amo_req.a.a_optional.memtype[1] = ypb_amo_req_i.cacheable;
   assign obi_amo_req.a.a_optional.mid = '0;
@@ -217,7 +240,7 @@ module cva6_obi_adapter_subsystem
   assign obi_load_req.a.aid = ypb_load_req_i.aid;
   assign obi_load_req.a.a_optional.auser = '0;
   assign obi_load_req.a.a_optional.wuser = '0;
-  assign obi_load_req.a.a_optional.atop = ypb_load_req_i.atop;
+  assign obi_load_req.a.a_optional.atop = '0;
   assign obi_load_req.a.a_optional.memtype[0] = '0;
   assign obi_load_req.a.a_optional.memtype[1] = ypb_load_req_i.cacheable;
   assign obi_load_req.a.a_optional.mid = '0;
@@ -237,7 +260,7 @@ module cva6_obi_adapter_subsystem
   //assign obi_mmu_ptw_req.a.aid = ypb_mmu_ptw_req_i.aid;
   //assign obi_mmu_ptw_req.a.a_optional.auser = '0;
   //assign obi_mmu_ptw_req.a.a_optional.wuser = '0;
-  //assign obi_mmu_ptw_req.a.a_optional.atop = ypb_mmu_ptw_req_i.atop;
+  //assign obi_mmu_ptw_req.a.a_optional.atop = '0;
   //assign obi_mmu_ptw_req.a.a_optional.memtype[0] = '0;
   //assign obi_mmu_ptw_req.a.a_optional.memtype[1]= ypb_mmu_ptw_req_i.cacheable;
   //assign obi_mmu_ptw_req.a.a_optional.mid = '0;
