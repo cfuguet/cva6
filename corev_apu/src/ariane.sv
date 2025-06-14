@@ -69,7 +69,9 @@ module ariane import ariane_pkg::*; #(
 
   cva6 #(
     .CVA6Cfg              ( CVA6Cfg                   ),
-    .rvfi_probes_t        ( rvfi_probes_t             )
+    .rvfi_probes_t        ( rvfi_probes_t             ),
+    .noc_req_t            ( noc_req_t                 ),
+    .noc_resp_t           ( noc_resp_t                )
   ) i_cva6 (
     .clk_i                ( clk_i                     ),
     .rst_ni               ( rst_ni                    ),
