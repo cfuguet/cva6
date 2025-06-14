@@ -184,7 +184,6 @@ module cva6_hpdcache_if_adapter
 
       //    Response forwarding ypb channel R
 
-      assign ypb_load_rsp_o.gnt = '0;  //unused
       assign ypb_load_rsp_o.rvalid = hpdcache_rsp_valid_i;
       assign ypb_load_rsp_o.rid = hpdcache_rsp_i.tid;
       assign ypb_load_rsp_o.err = '0;
