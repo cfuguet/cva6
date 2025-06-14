@@ -457,13 +457,12 @@ module frontend
   ypb_a_state_e ypb_a_state_d, ypb_a_state_q;
 
 
-  logic stall_ypb, stall_translation;
+  logic stall_ni, stall_ypb, stall_translation;
   logic data_req, data_rvalid;
 
   assign stall_ni = spec_req_non_idempot;
   assign stall_ypb = (ypb_a_state_q == REGISTRED);  //&& !ypb_load_rsp_i.pgnt;
   assign stall_translation = CVA6Cfg.MmuPresent ? areq_o.fetch_req && (!arsp_i.fetch_valid) : 1'b0;
-  assign stall_instr_queue = instr_queue_ready;
 
   assign ex_s1 = (CVA6Cfg.MmuPresent && arsp_i.fetch_exception.valid);
 

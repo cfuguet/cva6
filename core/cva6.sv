@@ -89,7 +89,7 @@ module cva6
   localparam type ypb_zcmt_rsp_t = `YPB_RSP_T(CVA6Cfg, CVA6Cfg.XLEN);
 
 
-  logic icache_en;
+  logic icache_enable;
   logic icache_flush;
   logic icache_miss;
 

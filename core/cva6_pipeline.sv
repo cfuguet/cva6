@@ -12,8 +12,7 @@
 // Date: 19.03.2017
 // Description: CVA6 Core module
 
-`include "obi/typedef.svh"
-`include "obi/assign.svh"
+`include "ypb_types.svh"
 `include "rvfi_types.svh"
 `include "cvxif_types.svh"
 
@@ -1102,7 +1101,6 @@ module cva6_pipeline
         .ypb_amo_req_t     (ypb_amo_req_t),
         .ypb_load_req_t    (ypb_load_req_t),
         .ypb_mmu_ptw_req_t (ypb_mmu_ptw_req_t),
-        .ypb_zcmt_req_t    (ypb_zcmt_req_t),
         .NumMissPorts      (1  /*FIXME*/)         //WT cache only ??
     ) perf_counters_i (
         .clk_i         (clk_i),
@@ -1133,7 +1131,6 @@ module cva6_pipeline
         .ypb_amo_req_i    (ypb_amo_req_o),
         .ypb_load_req_i   (ypb_load_req_o),
         .ypb_mmu_ptw_req_i(ypb_mmu_ptw_req_o),
-        .ypb_zcmt_req_i   (ypb_zcmt_req_o),
         .miss_vld_bits_i  ('0  /*FIXME*/),          //WT cache only ??
         .i_tlb_flush_i    (flush_tlb_ctrl_ex),
         .stall_issue_i    (stall_issue),

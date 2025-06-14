@@ -381,9 +381,9 @@ module cva6_ptw
 
       WAIT_GRANT: begin
         // send a request out
-        obi_mmu_ptw_req_o.vreq = 1'b1;
+        ypb_mmu_ptw_req_o.vreq = 1'b1;
         // wait for the WAIT_GRANT
-        if (obi_mmu_ptw_rsp_i.vgnt) begin
+        if (ypb_mmu_ptw_rsp_i.vgnt) begin
           // send the tag valid signal one cycle later
           tag_valid_n = 1'b1;
           state_d     = PTE_LOOKUP;
@@ -603,7 +603,7 @@ module cva6_ptw
       // 1. in the PTE Lookup check whether we still need to wait for an rvalid
       // 2. waiting for a grant, if so: wait for it
       // if not, go back to idle
-      if (((state_q inside {PTE_LOOKUP, WAIT_RVALID}) && !data_rvalid_q) || ((state_q == WAIT_GRANT) && obi_mmu_ptw_rsp_i.rvalid))
+      if (((state_q inside {PTE_LOOKUP, WAIT_RVALID}) && !data_rvalid_q) || ((state_q == WAIT_GRANT) && ypb_mmu_ptw_rsp_i.rvalid))
         state_d = WAIT_RVALID;
       else state_d = LATENCY;
     end
@@ -638,8 +638,8 @@ module cva6_ptw
       tlb_update_asid_q <= tlb_update_asid_n;
       vaddr_q           <= vaddr_n;
       global_mapping_q  <= global_mapping_n;
-      data_rdata_q      <= obi_mmu_ptw_rsp_i.rdata;
-      data_rvalid_q     <= obi_mmu_ptw_rsp_i.rvalid;
+      data_rdata_q      <= ypb_mmu_ptw_rsp_i.rdata;
+      data_rvalid_q     <= ypb_mmu_ptw_rsp_i.rvalid;
 
       if (CVA6Cfg.RVH) begin
         gpaddr_q          <= gpaddr_n;

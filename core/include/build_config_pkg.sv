@@ -158,7 +158,7 @@ package build_config_pkg;
     cfg.WtDcacheWbufDepth = CVA6Cfg.WtDcacheWbufDepth;
     cfg.FETCH_USER_WIDTH = CVA6Cfg.FetchUserWidth;
     cfg.FETCH_USER_EN = CVA6Cfg.FetchUserEn;
-    cfg.AXI_USER_EN = CVA6Cfg.DataUserEn | CVA6Cfg.FetchUserEn;
+    cfg.AXI_USER_EN = (CVA6Cfg.DataUserEn > 0) || (CVA6Cfg.FetchUserEn > 0);
 
     cfg.FETCH_WIDTH = unsigned'((CVA6Cfg.SuperscalarEn && !CVA6Cfg.PipelineOnly) ? 64 : 32);
     cfg.FETCH_BE_WIDTH = cfg.FETCH_WIDTH / 8;
