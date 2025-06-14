@@ -202,7 +202,7 @@ module cva6
   );
 
 
-  if (CVA6Cfg.PipelineOnly) begin : gen_cache_subsystem
+  if (CVA6Cfg.PipelineOnly) begin : gen_obi_adapter
 
     // -------------------
     // OBI Adapter
@@ -262,7 +262,7 @@ module cva6
         .noc_resp_i(noc_resp_i)
     );
 
-  end else begin : gen_obi_adapter
+  end else begin : gen_cache_subsystem
 
     // -------------------
     // Cache Subsystem
