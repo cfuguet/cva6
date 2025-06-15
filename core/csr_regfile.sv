@@ -1811,8 +1811,8 @@ module csr_regfile
     // mark the floating point extension register as dirty
     if (CVA6Cfg.FpPresent && (dirty_fp_state_csr || dirty_fp_state_i)) begin
       mstatus_d.fs = riscv::Dirty;
-      if (CVA6Cfg.RVH) begin
-        vsstatus_d.fs = v_q & riscv::Dirty;
+      if (CVA6Cfg.RVH && v_q) begin
+        vsstatus_d.fs = riscv::Dirty;
       end
     end
     // mark the vector extension register as dirty
