@@ -209,6 +209,21 @@ ${HPDCACHE_DIR}/rtl/src/common/macros/behav/hpdcache_sram_1rw.sv
 ${HPDCACHE_DIR}/rtl/src/common/macros/behav/hpdcache_sram_wbyteenable_1rw.sv
 ${HPDCACHE_DIR}/rtl/src/common/macros/behav/hpdcache_sram_wmask_1rw.sv
 
+//  HPDcache Error Correction
++incdir+${HPDCACHE_DIR}/rtl/src/utils/ecc
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_pkg.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_36_29_dec.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_36_29_enc.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_39_32_dec.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_39_32_enc.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_55_48_dec.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_55_48_enc.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_72_64_dec.sv
+${HPDCACHE_DIR}/rtl/src/utils/ecc/prim_secded_72_64_enc.sv
+${HPDCACHE_DIR}/rtl/src/common/macros/behav/hpdcache_sram_ecc_1rw.sv
+${HPDCACHE_DIR}/rtl/src/common/macros/behav/hpdcache_sram_wbyteenable_ecc_1rw.sv
+${HPDCACHE_DIR}/rtl/src/common/macros/behav/hpdcache_sram_wmask_ecc_1rw.sv
+
 // Physical Memory Protection
 // NOTE: pmp.sv modified for DSIM (unchanged for other simulators)
 ${CVA6_REPO_DIR}/core/pmp/src/pmp.sv
