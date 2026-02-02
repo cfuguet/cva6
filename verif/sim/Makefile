@@ -213,7 +213,7 @@ COMMON_RUN_ARGS = \
 ALL_UVM_FLAGS   = -lca -sverilog +incdir+$(VCS_HOME)/etc/uvm/src \
 	  $(VCS_HOME)/etc/uvm/src/uvm_pkg.sv -ntb_opts uvm-1.2 -timescale=1ns/1ps \
 	  -assert svaext -race=all -ignore unique_checks -full64 -q +incdir+$(VCS_HOME)/etc/uvm/src \
-	  $(if $(DEBUG), -debug_access+all $(if $(VERDI), -kdb) $(if $(TRACE_COMPACT),+vcs+fsdbon)) \
+	  $(if $(DEBUG), -debug_access+all $(if $(VERDI), -kdb) $(if $(filter $(TRACE_COMPACT),1),+vcs+fsdbon)) \
 	  -cm_seqnoconst -diag noconst -cm_cond arith \
 
 ALL_SIMV_UVM_FLAGS      = +vcs+lic+wait $(issrun_opts) \
@@ -280,7 +280,7 @@ vcs_uvm_comp:
 	  $(if $(gate), -sdf Max:uvmt_cva6_tb.cva6_dut_wrap.cva6_tb_wrapper_i.i_cva6:$(CVA6_REPO_DIR)/pd/synth/cva6_$(TARGET_CFG)_synth.sdf +neg_tchk, +notimingcheck)
 
 vcs_uvm_run: vcs_uvm_comp
-	$(if $(TRACE_FAST), unset VERDI_HOME ;) \
+	$(if $(filter $(TRACE_FAST),1), unset VERDI_HOME ;) \
 	cd $(VCS_WORK_DIR)/ && \
 	$(VCS_WORK_DIR)/simv \
 	    $(COMMON_RUN_ARGS) \
@@ -416,7 +416,7 @@ veri-testharness-pk:
 	rm -rf $(path_var)/work-ver
 	@echo "Trace compact value $(TRACE_COMPACT)"
 	make -C $(path_var) verilate verilator="verilator --no-timing" target=$(target) defines=$(subst +define+,,$(isscomp_opts))
-	$(path_var)/work-ver/Variane_testharness $(if $(TRACE_COMPACT), -f verilator.fst) $(if $(TRACE_FAST), -v verilator.vcd) \
+	$(path_var)/work-ver/Variane_testharness $(if $(filter $(TRACE_COMPACT),1), -f verilator.fst) $(if $(filter $(TRACE_FAST),1), -v verilator.vcd) \
 		$(PK_INSTALL_DIR)/riscv-none-elf/bin/pk $(elf) \
 		+tohost_addr=$(shell $$RISCV/bin/$(CV_SW_PREFIX)nm -B $(PK_INSTALL_DIR)/riscv-none-elf/bin/pk | grep -w tohost | cut -d' ' -f1) \
 		$(issrun_opts)
@@ -430,7 +430,7 @@ veri-testharness-pk:
 
 veri-testharness:
 	make -C $(path_var) verilate verilator="verilator --no-timing" target=$(target) defines=$(subst +define+,,$(isscomp_opts))
-	$(path_var)/work-ver/Variane_testharness $(if $(TRACE_COMPACT), -f verilator.fst) $(if $(TRACE_FAST), -v verilator.vcd) $(elf) $(issrun_opts) \
+	$(path_var)/work-ver/Variane_testharness $(if $(filter $(TRACE_COMPACT),1), -f verilator.fst) $(if $(filter $(TRACE_FAST),1), -v verilator.vcd) $(elf) $(issrun_opts) \
 	  $(COMMON_PLUS_ARGS)
 	# If present, move default waveform files to log directory.
 	# Keep track of target in waveform file name.
