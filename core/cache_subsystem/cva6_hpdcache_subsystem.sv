@@ -233,8 +233,7 @@ module cva6_hpdcache_subsystem
         (CVA6Cfg.DCacheType == config_pkg::HPDCACHE_WB) ||
         (CVA6Cfg.DCacheType == config_pkg::HPDCACHE_WT_WB);
     userCfg.lowLatency = 1'b1;
-    userCfg.eccDataEn = 1'b1;
-    userCfg.eccDirEn = 1'b1;
+    userCfg.eccEn = 1'b1;
     userCfg.eccScrubberEn = 1'b1;
     return userCfg;
   endfunction
