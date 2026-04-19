@@ -102,8 +102,8 @@ module cva6_hpdcache_wrapper
     input  logic                 dcache_mem_resp_read_valid_i,
     input  hpdcache_mem_resp_r_t dcache_mem_resp_read_i,
 
-    input  logic            dcache_mem_resp_read_inval_i,
-    input  hpdcache_nline_t dcache_mem_resp_read_inval_nline_i,
+    input logic            dcache_mem_resp_read_inval_i,
+    input hpdcache_nline_t dcache_mem_resp_read_inval_nline_i,
 
     input  logic              dcache_mem_req_write_ready_i,
     output logic              dcache_mem_req_write_valid_o,
